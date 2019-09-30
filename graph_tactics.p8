@@ -4,7 +4,7 @@ __lua__
 dev=true
 
 function _init()
-	
+
 	load_map()
 end
 
@@ -20,7 +20,7 @@ function add_troop(n1,n2)
 	add(troops, {
 		s={x=n1.x,y=n1.y},
 		e={x=n2.x,y=n2.y},
-		
+
 		max_dist=sqrt((n1.x-n2.x)^2+(n1.y-n2.y)^2),
 		dist=0,
 		spd=3,
@@ -44,8 +44,8 @@ function get_near_node(ndoe,dr)
 	local res_idx
 	for i,n in pairs(nodes) do
 		local _dist=dist(node,n)
-		
-		if(_dist<bst_dst 
+
+		if(_dist<bst_dst
 			and node_dir(node,n,dr)) then
 			res_idx=i
 			bst_dst=_dist
@@ -125,10 +125,10 @@ end
 
 function sort(a,cmp)
 	for i=1,#a do
-		local j = i
-		while j > 1 and cmp(a[j-1],a[j]) do
-				a[j],a[j-1] = a[j-1],a[j]
-		j = j - 1
+		local j=i
+		while j>1 and cmp(a[j-1],a[j]) do
+			a[j],a[j-1]=a[j-1],a[j]
+			j=j-1
 		end
 	end
 	return a
@@ -159,39 +159,39 @@ function _draw()
 	draw_nodes()
 	draw_cur()
 	draw_fcs()
-		
-	if(dev) draw_logs()	
+
+	if(dev) draw_logs()
 end
 
 function draw_nodes()
 	for i in pairs(nx) do
 		local x,y=nx[i],ny[i]
 		local t,s,c=inf(i)
-		
+
 		if(is_safe(i)) then
 			spr(10,x-4,y-4)
 		end
-		
+
 		--starts at spr 6
 		local _s=2
 		if(s==0) _s=0
 		if(s==1) _s=1
 		if(s>=5) _s=3
-				
+
 		--_s=flr(s/4*troop_max)
-		
-		
-	
+
+
+
 		pal(9,c)
 		spr(6+_s,x-4,y-4)
 		pal()
-		
+
 		--if producing, whitecircle
 		--different stages of full
-		
+
 		--print(alpha(i),x-7,y-6,7)
 		--print(size[i],x+3,y-6,c)--tm_clr[i])
-		
+
 		if(dev) print(i,x-6,y-6,7)
 	end
 end
@@ -231,9 +231,9 @@ function draw_troops()
 	pal(6,3)
 	for t in all(troops) do
 		local d=t.dist/t.max_dist
-		local x=(1-d)*t.s.x+d*t.e.x 	
+		local x=(1-d)*t.s.x+d*t.e.x
 		local y=(1-d)*t.s.y+d*t.e.y
-		
+
 		spr(3,x-3,y-3)
 	end
 	pal()
@@ -243,7 +243,7 @@ function draw_cursor()
 	local s_node=nodes[cur.n_idx]
 	local x,y=s_node.x,s_node.y
 	local d=cur.frames[cur.ani]
-	
+
 	spr(5,x-8-d,y-8-d,1,1,false,false)
 	spr(5,x+0+d,y-8-d,1,1,true,false)
 	spr(5,x-8-d,y+0+d,1,1,false,true)
@@ -254,7 +254,7 @@ end
 
 function _update()
 	if(dev) test()
-	
+
 	update_cur()
 
 end
@@ -286,12 +286,12 @@ function update_troops()
 		if(t._t<=0) then
 			t._t=t.spd
 			t.dist+=1
-			
+
 			--reached the distination
 			if(t.dist>t.max_dist) then
 				del(troops, t)
 			end
-			
+
 		end
 	end
 end
@@ -307,9 +307,9 @@ cura=animate(25,{0,1})
 
 function update_cur()
 	log(cur_fcs)
-	
+
 	cur_mov()
-	
+
 	if(btn()==0) check_snap()
 end
 
@@ -317,7 +317,7 @@ function draw_cur()
 	local x,y=curx,cury
 	local d=cura()
 	if(cur_fcs==false) d=-1
-	
+
 	spr(5,x-8-d,y-8-d,1,1,false,false)
 	spr(5,x+0+d,y-8-d,1,1,true,false)
 	spr(5,x-8-d,y+0+d,1,1,false,true)
@@ -333,7 +333,7 @@ function cur_mov()
 	if(btn(⬇️)) cury+=3
 	if(btn(⬅️)) curx-=3
 	if(btn(➡️)) curx+=3
-	
+
 	-- put in bounds?
 
 end
@@ -342,7 +342,7 @@ function check_snap()
 	local t=rank_nodes(curx,cury)[1]
 	local tx,ty=pos(t)
 	--log(rank_nodes2(curx,cury))
-	
+
 	if(dist(curx,cury,tx,ty)<12) then
 		cur_fcs=t
 		curx,cury=tx,ty
@@ -380,8 +380,8 @@ maplmty={20,120}
 function load_map()
 	nx={56,82,40,30,55,80 }
 	ny={16,32,99,80,40,90}
-	
-	
+
+
 	--change this to prox
 	-- built by link table
 	links={
@@ -410,10 +410,10 @@ end
 function rank_nodes(n)
 	local t={}
 	local x,y=nx[n],ny[n]
-	for i=1,#nx do 
-		if(i!=n) add(t,i) 
+	for i=1,#nx do
+		if(i!=n) add(t,i)
 	end
-	
+
 	return sort(t, function(a,b)
 		return dist(nx[a],ny[a],x,y)
 			> dist(nx[b],ny[b],x,y)
@@ -423,8 +423,8 @@ end
 
 function rank_nodes(x,y,ign)
 	local t={}
-	for i=1,#nx do 
-		if(i!=ign) add(t,i) 
+	for i=1,#nx do
+		if(i!=ign) add(t,i)
 	end
 	return sort(t, function(a,b)
 		return dist(nx[a],ny[a],x,y)
@@ -438,7 +438,7 @@ function rank_nodes3(x,y)
 	function dst(a,b,x,y)
 		return abs(a-x)+abs(b-y)
 	end
-	
+
 	local r={}
 	for i=1,#nx,1 do
 		local d=dst(nx[i],ny[i],x,y)
@@ -458,12 +458,12 @@ end
 -->8
 -- todo
 --[[
-- add in a growth timer 
+- add in a growth timer
  - once safe, start
 - overflow check
   - if add, and max + links
   - send troop to each link
-  
+
 - add a really basic order
   processor
 
