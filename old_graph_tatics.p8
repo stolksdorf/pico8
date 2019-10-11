@@ -31,7 +31,7 @@ end
 function test()
 
 	--log({a=1,b=2,c=3})
-	
+
 end
 
 
@@ -282,7 +282,7 @@ function _update()
 	if(dev) test()
 
 	upt()
-	
+
 	update_orders()
 
 	update_troops()
@@ -474,7 +474,7 @@ end
 tm_clr={12,9,11,14} --remove
 clrs={12,9,11,14}
 
---each tick every player 
+--each tick every player
 --gets a tick
 
 orders={}
@@ -529,7 +529,7 @@ function update_orders()
 				o._t=0
 				deploy(o.s,o.e)
 			end
-		end	
+		end
 	end
 end
 function draw_orders()
@@ -539,21 +539,21 @@ function draw_orders()
 	rect(x,y,x+w,y+h,6)
 	line(x,y+10,x+w,y+10)
 	print("orders",x+3,y+3)
-	
+
 	for i,o in pairs(main_plyr.orders) do
 --		local txt=alpha(o.s).."  "..alpha(o.e)
 		local txt=o.s.."  "..o.e
 		local x,y=x+2,y+5+i*8
-			
+
 		print(txt,x,y,6)
 		spr(21,x+3,y-1)
-		
+
 		rectfill(x+18,y+1,x+23,y+3,5)
 		rectfill(x+18,y+1,x+18+5*o._t/100,y+3,9)
-		
+
 		--line(x,y,x+w*o._t/100,y,13)
 		--draw_timer(x,y,o._t/100)
-	
+
 	end
 end
 
@@ -567,7 +567,7 @@ function deploy(home,target)
 -- add a troop to the
 
 	if(size[home]<=1) return
-	
+
 	size[home]-=1
 	add(troops,{
 		srt=home,
@@ -739,85 +739,16 @@ end
 -->8
 --todo
 --[[
---main
+- draw a skrimish line
+  where troops are meeting
+
+- add in a growth timer
+ - once safe, start
 
 
+- make a plyrs obj
+ - clr, ordrs,
 
---game
-update_game
-draw_game
-function draw_fcs()
-function troop_xy(t)
-function update_cur()
-function invade(n,tm)
-function check_troops()
-function update_orders()
-function draw_orders()
-function draw_timer(x,y,p)
-function deploy(home,target)
-function upd_scores()
-function check_input()
-function draw_troops()
-function update_troops()
-
-
---ui
-update_ui
-draw_ui
-
-function hvrtxt(txt,x,y,c)
-function update_hvrtxt()
-function draw_cursor()
-function draw_score()
-function update_cur()
-function draw_cur()
-function cur_mov()
-function check_snap()
-
-function draw_hvrtxt()
-
-
-
---map
-function draw_nodes()
-function draw_links()
-function update_nodes()
-function load_map()
-function init_map()
-function inf(n)
-function pos(n)
-function get_link(a,b)
-function node_dist(a,b)
-function rank_nodes(x,y,ign)
-function is_safe(n)
-function highlight_link(n1,n2)
-function fog_of_war()
-
-
-
---map_gen?
-
-
-
-
---ai
-
-
-
-
---utils
-function test()
-function animate(spd,frms)
-function log(...)
-function draw_logs()
-function prt(x)
-function noop(x) return x end
-function join(t,s,fn)
-function sort(a,cmp)
-function alpha(n)
-function tiny(n)
-function dist(a,b,x,y)
-function shadow_text(txt,x,y,c,s)
 
 ]]--
 __gfx__

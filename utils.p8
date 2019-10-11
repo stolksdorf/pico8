@@ -10,13 +10,34 @@ tmp=0
 function _update()
 	tmp+=1
 	log("yo ", tmp)
+
+	log(join({1,2,3},"-",
+		function(v,k)
+			return v
+		end
+	))
+	
+	local r={a=1,b=2,c=3}
+
+
+	
+	log(join({a=1,b=2,c=3},"-",
+		function(v,k)
+			return k..v
+		end
+	))
+	
+	for k,v in pairs({a=1,b=2,c=3}) do
+		log(k,v)
+	end
+	
 end
 
 
 function _draw()
 	cls()
 	log("moar logs 웃")
-	shadow_text("yo yo yo",10,10)
+	--shadow_text("yo yo yo",10,10)
 
 
 	draw_logs()
@@ -43,46 +64,6 @@ function shadow_text(txt,x,y,c,s)
 	print(txt,x,y,c)
 end
 
---Logging
-logs={}
-function log(...)
-	add(logs,join(mp({...}, function(v)
-		return prt(v)
-	end)," "))
-end
-function draw_logs()
-	for i,l in pairs(logs) do
-		print(l,0,i*8,8)
-	end
-	logs={}
-end
-
-function prt(x)
-	if(type(x)=="table") then
-		return "{"..join(mp(x, function(v,k)
-			if(type(k)=="number") then
-				return prt(v)
-			else
-				return k.."="..prt(v)
-			end
-		end),",").."}"
-	end
-	return tostr(x)
-end
-
-
-function join(t,s)
-	local r=t[1]
-	for i=2,#t do r=r..s..t[i] end
-	return r
-end
-
-function mp(t,fn)
-	local r={}
-	for k,v in pairs(t) do r[k]=fn(v,k) end
-	return r
-end
-
 
 function sort(a,cmp)
 	for i=1,#a do
@@ -105,6 +86,78 @@ end
 
 function dist(a,b,x,y)
 	return sqrt((a-x)^2+(b-y)^2)
+end
+
+-->8
+--logging
+
+logs={}
+function log(...)
+	add(logs,join(mp({...}, function(v)
+		return prt(v)
+	end)," "))
+end
+function draw_logs()
+	for i,l in pairs(logs) do
+		print(l,0,i*8,8)
+	end
+	logs={}
+end
+
+
+function prt(x)
+	if(type(x)=="table") then
+		return "{"..join(mp(x, function(v,k)
+			if(type(k)=="number") then
+				return prt(v)
+			else
+				return k.."="..prt(v)
+			end
+		end),",").."}"
+	end
+	return tostr(x)
+end
+
+--
+--function prt3(x)
+--	if(type(x)=="table") then
+--		local r="{"
+--		for k,v in pairs(x) then
+--			if(type(k)=="number") then
+--				r=r..prt(v)
+--			else
+--				return k.."="..prt(v)
+--			end
+--		end),",").."}"
+--	end
+--	return tostr(x)
+--end
+
+
+
+function join2(t,s)
+	if(#t==0) return ""
+	local r=t[1]
+	for i=2,#t do	r=r..s..t[i] end
+	return r
+end
+
+function noop(x) return x end
+
+function join(t,s,fn)
+	fn=fn or noop
+	local r=""
+	for k,v in pairs(t) do
+		if(r!="") r=r..s
+		r=r..fn(v,k)
+	end
+	return r
+end
+
+function mp(t,fn)
+	local r={}
+	for k,v in pairs(t) do r[k]=fn(v,k) end
+	return r
 end
 
 __gfx__
