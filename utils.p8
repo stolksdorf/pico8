@@ -16,21 +16,21 @@ function _update()
 			return v
 		end
 	))
-	
+
 	local r={a=1,b=2,c=3}
 
 
-	
+
 	log(join({a=1,b=2,c=3},"-",
 		function(v,k)
 			return k..v
 		end
 	))
-	
+
 	for k,v in pairs({a=1,b=2,c=3}) do
 		log(k,v)
 	end
-	
+
 end
 
 
@@ -159,6 +159,42 @@ function mp(t,fn)
 	for k,v in pairs(t) do r[k]=fn(v,k) end
 	return r
 end
+
+
+particles={}
+function particle(x,y,c)
+	add(particles,{
+		x=x,y=y,c=c,
+		dx=(rnd(2)-1)/2,
+		dy=(-rnd(1)-1)/1,
+		t=20,
+		draw=function(p)
+			p.x+=p.dx
+			p.y+=p.dy
+			p.dy+=0.1 --grav
+			p.t-=1
+			pal(2,p.c)
+			spr(3,p.x-4,p.y-4)
+			if(p.t==0) del(particles,p)
+		end
+	})
+end
+
+
+function draw(lst)
+	for p in all(lst) do
+		p:draw()
+	end
+end
+
+function draw_particles()
+	draw(particles)
+end
+
+
+--fade
+--dpal={0,1,1,2,1,13,6,4,4,9,3,13,1,13,14}
+
 
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
